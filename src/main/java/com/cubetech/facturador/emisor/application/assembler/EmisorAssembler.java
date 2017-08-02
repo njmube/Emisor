@@ -20,6 +20,7 @@ import com.cubetech.facturador.emisor.domain.catalogo.RegimenFiscal;
 import com.cubetech.facturador.emisor.domain.cuenta.Emisor;
 import com.cubetech.facturador.emisor.interfaces.facade.CatalogosService;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.EmisorDTO;
+import com.cubetech.facturador.emisor.interfaces.facade.dto.EmitirDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.RegistroEmisorDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.catalogos.CatalogoDTO;
 import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepDTO;
@@ -104,6 +105,22 @@ public class EmisorAssembler {
 		ret.setNumeroCertificado(e.getCertificado().getSerie());
 		ret.setFechaInicial( formatter.format(e.getCertificado().getVigencia().getFechaInicial()));
 		ret.setFechaFinal( formatter.format(e.getCertificado().getVigencia().getFechaFinal()));
+		return ret;
+	}
+	
+	public EmitirDTO emisorToEmitirDTO(Emisor e){
+		EmitirDTO ret = new EmitirDTO();
+		
+		ret.setNoCertificado(e.getCertificado().getSerie());
+		ret.setCertificado(e.getCertificado().getPublico().getCorrelacion());
+		ret.setLugarExpedicion(e.getLugarExpedicion().getClaveSat());
+		ret.setRfc(e.getEmisor().getRfc().getRfc());
+		ret.setNombre(e.getEmisor().getRazonSocial().getNombre());
+		ret.setRegimenFiscal(e.getRegimenFiscal().getClaveSat());
+		ret.setPass(e.getCertificado().getPassword());
+		ret.setPrivadoId(e.getCertificado().getPrivado().getCorrelacion());
+		ret.setEmitir(e.getCertificado().vigente());
+		
 		return ret;
 	}
 }

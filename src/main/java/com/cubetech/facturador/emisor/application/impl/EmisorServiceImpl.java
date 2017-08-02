@@ -25,6 +25,7 @@ import com.cubetech.facturador.emisor.interfaces.facade.dto.CertificadoDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.CuentaDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.DireccionDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.EmisorDTO;
+import com.cubetech.facturador.emisor.interfaces.facade.dto.EmitirDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.RegistroEmisorDTO;
 import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepDTO;
 import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepository;
@@ -35,16 +36,15 @@ public class EmisorServiceImpl implements  EmisorService{
 	private final static Logger logger = LoggerFactory.getLogger(EmisorServiceImpl.class);
 	
 	@Autowired
-	CuentaRepository cuentaRepository;
+	private CuentaRepository cuentaRepository;
 	@Autowired
-	CuentaService cuentaService;
+	private CuentaService cuentaService;
 	@Autowired
-	CatalogosService catalogoService;
+	private CatalogosService catalogoService;
 	@Autowired
-	ModelMapper modelMapper;
-	
+	private ModelMapper modelMapper;
 	@Autowired
-	ArchivoRepository archivoRepository;
+	private ArchivoRepository archivoRepository;
 	
 	@Override
 	public RegistroEmisorDTO creaEmisor(String cuenta, EmisorDTO emisor) {
@@ -114,6 +114,24 @@ public class EmisorServiceImpl implements  EmisorService{
 		
 	}
 	
+	private ArchivoCuenta consultaArchivo(Cuenta cuenta, String correlacion){
+		ArchivoCuenta ret;
+		ArchivoRepDTO archivo;
+		
+		if(correlacion != null){
+			archivo = archivoRepository.findbyCuentaCorrelacion(cuenta.getCorrelacion(), correlacion);
+			if(archivo == null){
+				logger.debug("No se encutra el archivo: {}", correlacion);
+				throw new IllegalArgumentException("No se encuetra el archivo: " + correlacion);
+			}
+			ret = this.modelMapper.map(archivo, ArchivoCuenta.class);
+			ret.setContent(ArchivoCuenta.toByteArray(archivo.getContent()));
+		}else{
+			throw new IllegalArgumentException("la correlacion no puede ser null");
+		}
+		return ret;
+	}
+	
 	private void consultaArchivos(Cuenta cuenta, Emisor emisor){
 		ArchivoRepDTO archivo;
 		ArchivoCuenta tmp;
@@ -121,7 +139,7 @@ public class EmisorServiceImpl implements  EmisorService{
 			archivo = archivoRepository.findbyCuentaCorrelacion(cuenta.getCorrelacion(), emisor.getLogo().getCorrelacion());
 			if(archivo == null){
 				logger.error("No se encutra el archivo: {}", emisor.getLogo());
-				throw new IllegalArgumentException("No se encutra el archivo: " + emisor.getLogo().toString());
+				throw new IllegalArgumentException("No se encuetra el archivo: " + emisor.getLogo().toString());
 			}
 			tmp = this.modelMapper.map(archivo, ArchivoCuenta.class);
 			tmp.setContent(ArchivoCuenta.toByteArray(archivo.getContent()));
@@ -216,6 +234,33 @@ public class EmisorServiceImpl implements  EmisorService{
 		
 		return ret.getEmisores();
 		
+	}
+
+	@Override
+	public EmitirDTO consultaDatosEmitir(String cuenta, String emisor) {
+		Cuenta cta;
+		Emisor e;
+		EmitirDTO ret;
+		EmisorAssembler emisorAssembler = new EmisorAssembler(catalogoService, modelMapper);
+		
+		try{
+			cta = consultaCuenta(cuenta);
+			logger.debug("Cuenta:" + cta.toString());
+		}catch(Exception exp){
+			logger.error("Cuenta: " + cuenta, exp);
+			throw exp;
+		}
+		e = cta.buscaEmisor(emisor);
+		logger.debug("EmisorEncontrado: {}", e);
+		try{
+			ret = emisorAssembler.emisorToEmitirDTO(e);
+			logger.debug("Emitir: {}", ret);
+		}catch(Exception exp){
+			logger.error("No se encuentra el certificado emisor: {}: ", e, exp);
+			throw exp;
+		}
+		
+		return ret;
 	}
 
 }
