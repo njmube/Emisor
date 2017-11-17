@@ -10,11 +10,9 @@ import lombok.Data;
 @ConfigurationProperties(prefix="app")
 public class AppProperties {
 	
-	private Archivorep archivorep = new Archivorep();
-
-	@Data
-	public static class Archivorep{
-		private String url;
-		private String saveUri;
-	}
+	private String catalogourl;
+	private String archivourl;
+	private String emisorurl;
+	private String timbreurl;
+	
 }

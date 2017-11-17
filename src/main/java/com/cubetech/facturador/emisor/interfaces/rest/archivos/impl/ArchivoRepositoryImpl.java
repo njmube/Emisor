@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.xml.ws.http.HTTPException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,8 +26,6 @@ import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepository
 @Repository
 public class ArchivoRepositoryImpl implements ArchivoRepository {
 	
-	private final static Logger logger = LoggerFactory.getLogger(ArchivoRepositoryImpl.class);
-	
 	@Autowired
 	AppProperties properties;
 	
@@ -46,7 +42,7 @@ public class ArchivoRepositoryImpl implements ArchivoRepository {
 	@Override
 	public ArchivoRepDTO findbyCuentaCorrelacion(String cuenta, String correlation) {
 		ArchivoRepDTO ret = null;
-		final String url = properties.getArchivorep().getUrl() + properties.getArchivorep().getSaveUri() + "/" + correlation;
+		final String url = properties.getArchivourl() + "/Archivo" + "/" + correlation;
 		HttpHeaders headers = ArchivoRepositoryImpl.HedersJson();
 		headers.set("cuenta", cuenta);
 		HttpEntity<ArchivoRepDTO> request = new  HttpEntity<>(headers);
@@ -73,7 +69,7 @@ public class ArchivoRepositoryImpl implements ArchivoRepository {
 	
 	@Override
 	public List<ArchivoRepDTO> save(String cuenta, List<ArchivoRepDTO> archivo) {
-		final String url = properties.getArchivorep().getUrl() + properties.getArchivorep().getSaveUri();
+		final String url = properties.getArchivourl() +  "/Archivo";
 		ArchivoRepDTO[] tmp = archivo.toArray( new ArchivoRepDTO[0]);
 		ArchivoRepDTO[] respuesta;
 		List<ArchivoRepDTO> ret;

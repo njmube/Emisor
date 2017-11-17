@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cubetech.facturador.emisor.application.CuentaService;
 import com.cubetech.facturador.emisor.application.EmisorService;
 import com.cubetech.facturador.emisor.application.assembler.EmisorAssembler;
 import com.cubetech.facturador.emisor.domain.cuenta.ArchivoCuenta;
@@ -37,8 +36,6 @@ public class EmisorServiceImpl implements  EmisorService{
 	
 	@Autowired
 	private CuentaRepository cuentaRepository;
-	@Autowired
-	private CuentaService cuentaService;
 	@Autowired
 	private CatalogosService catalogoService;
 	@Autowired
@@ -113,7 +110,7 @@ public class EmisorServiceImpl implements  EmisorService{
 		archivoRepository.save(cuenta.getCorrelacion(), archs);
 		
 	}
-	
+	/*
 	private ArchivoCuenta consultaArchivo(Cuenta cuenta, String correlacion){
 		ArchivoCuenta ret;
 		ArchivoRepDTO archivo;
@@ -131,7 +128,7 @@ public class EmisorServiceImpl implements  EmisorService{
 		}
 		return ret;
 	}
-	
+	*/
 	private void consultaArchivos(Cuenta cuenta, Emisor emisor){
 		ArchivoRepDTO archivo;
 		ArchivoCuenta tmp;

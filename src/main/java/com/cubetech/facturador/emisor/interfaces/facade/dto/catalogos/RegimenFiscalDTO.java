@@ -24,11 +24,6 @@ public class RegimenFiscalDTO extends CatalogoDTO {
 		return NAME;
 	}
 	
-	public RegimenFiscalDTO(Map<?,?> map){
-		super(map);
-		setFisica((boolean) map.get("fisica"));
-		setMoral((boolean) map.get("moral"));
-	}
 	public RegimenFiscalDTO(){
 		
 	}

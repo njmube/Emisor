@@ -27,7 +27,7 @@ public class EmisorController {
 	@Autowired
 	EmisorService emisorService;
 	
-	@RequestMapping("/Emisores")
+	@RequestMapping("/Emisor")
 	public List<EmisorDTO> consultaEmisores(@RequestHeader(value="cuenta")String cuenta){
 		return emisorService.consulta(cuenta);
 	}

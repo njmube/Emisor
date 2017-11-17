@@ -1,14 +1,18 @@
 package com.cubetech.facturador.emisor.interfaces.facade.dto.catalogos;
 
-import java.util.Map;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper=true)
 @ToString(callSuper=true)
 public class CodigoPostalDTO extends CatalogoDTO {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6660838013234387933L;
 	private static final String NAME = "codigoPostal";
 	private String estado;
 	private String municipio;
@@ -25,13 +29,6 @@ public class CodigoPostalDTO extends CatalogoDTO {
 	
 	public CodigoPostalDTO(){
 		
-	}
-	
-	public CodigoPostalDTO(Map<?,?> map){
-		super(map);
-		setEstado((String)map.get("estado"));
-		setMunicipio((String)map.get("municipio"));
-		setLocalidad((String)map.get("localidad"));
 	}
 	
 }

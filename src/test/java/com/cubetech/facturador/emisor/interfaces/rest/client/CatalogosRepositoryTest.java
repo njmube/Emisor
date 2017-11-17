@@ -1,5 +1,5 @@
 package com.cubetech.facturador.emisor.interfaces.rest.client;
-
+/*
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -34,10 +34,10 @@ public class CatalogosRepositoryTest {
 					if(cat.size() > 0){
 						cat.get(0);
 					}
-				}*/
+				}
 		}catch(RestClientException e){
 			e.printStackTrace();
 		}
 		
 	}
-}
+}*/

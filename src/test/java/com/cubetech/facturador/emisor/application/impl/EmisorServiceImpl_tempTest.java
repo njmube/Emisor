@@ -1,5 +1,5 @@
 package com.cubetech.facturador.emisor.application.impl;
-
+/*
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cubetech.facturador.emisor.AppConfigTest;
 import com.cubetech.facturador.emisor.application.EmisorService;
-import com.cubetech.facturador.emisor.domain.cuenta.Emisor;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.ArchivoDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.CertificadoDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.DireccionDTO;
@@ -66,9 +65,7 @@ public class EmisorServiceImpl_tempTest {
 		emisortmp.setRegimenFiscal("601");
 		emisortmp.setRfc("CMC161114E10");
 		
-		
-		
-		int i = 0;
 	}
 
 }
+*/

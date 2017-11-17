@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.cubetech.facturador.emisor</groupId>
-	<artifactId>Emisor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>emisor</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>Emisor</name>
@@ -21,7 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
@@ -67,13 +67,13 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 
 		</dependency>
-			
+
 		<dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.3</version>
     </dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
 <dependency>
     <groupId>org.bouncycastle</groupId>
@@ -85,23 +85,25 @@
    <groupId>com.fasterxml.jackson.core</groupId>
    <artifactId>jackson-databind</artifactId>
 </dependency>
-			
+
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
 <dependency>
-	<groupId>org.apache.commons.ssl</groupId>
-	<artifactId>no-yet-common-ssl</artifactId>
-	<version>0.3.17</version>
-	<scope>system</scope>
-	<systemPath>${basedir}/libs/not-yet-commons-ssl-0.3.17.jar</systemPath>
-</dependency>
+			<groupId>org.apache.commons.ssl</groupId>
+			<artifactId>no-yet-common-ssl</artifactId>
+			<version>0.3.17</version>
+		</dependency>
 
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
-	
+
 	<repositories>
 		<repository>
 			<id>projectlombok.org</id>
