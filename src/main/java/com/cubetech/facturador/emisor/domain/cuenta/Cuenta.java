@@ -18,9 +18,11 @@ import javax.validation.ValidationException;
 import com.cubetech.facturador.emisor.domain.shared.Entidad;
 
 import lombok.Data;
+import lombok.ToString;
 
-@Data
+@Data 
 @Entity
+@ToString(exclude={"id", "emisores"})
 @Table(indexes = @Index(columnList = "correlacion", unique= true))
 public class Cuenta  implements Entidad<Cuenta>{
 	

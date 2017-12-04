@@ -16,5 +16,6 @@ docker service create \
         --restart-delay 5s \
         --update-delay 10s \
         --update-parallelism 1 \
+        -p 57778:57778  \
         --mount type=bind,source=/etc/localtime,destination=/etc/localtime \
         $IMAGEN:$VERSION

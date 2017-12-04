@@ -25,6 +25,7 @@ import com.cubetech.facturador.emisor.interfaces.facade.dto.CuentaDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.DireccionDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.EmisorDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.EmitirDTO;
+import com.cubetech.facturador.emisor.interfaces.facade.dto.ImprimirDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.RegistroEmisorDTO;
 import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepDTO;
 import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepository;
@@ -34,14 +35,21 @@ public class EmisorServiceImpl implements  EmisorService{
 
 	private final static Logger logger = LoggerFactory.getLogger(EmisorServiceImpl.class);
 	
-	@Autowired
+	
 	private CuentaRepository cuentaRepository;
-	@Autowired
-	private CatalogosService catalogoService;
-	@Autowired
 	private ModelMapper modelMapper;
-	@Autowired
 	private ArchivoRepository archivoRepository;
+	private EmisorAssembler emisorAssembler;
+	
+	@Autowired
+	public EmisorServiceImpl(CuentaRepository cuentaRepository, ModelMapper modelMapper, 
+													ArchivoRepository archivoRepository, CatalogosService catalogoService){
+		this.cuentaRepository = cuentaRepository;
+		this.modelMapper = modelMapper;
+		this.archivoRepository = archivoRepository;
+		this.emisorAssembler = new EmisorAssembler(catalogoService, this.modelMapper );
+		
+	}
 	
 	@Override
 	public RegistroEmisorDTO creaEmisor(String cuenta, EmisorDTO emisor) {
@@ -49,7 +57,6 @@ public class EmisorServiceImpl implements  EmisorService{
 		Cuenta cta;
 		Emisor e;
 		Emisor tmp;
-		EmisorAssembler emisorAssembler = new EmisorAssembler(catalogoService, modelMapper);
 		boolean banUpdate = true;
 		
 		try{
@@ -102,8 +109,7 @@ public class EmisorServiceImpl implements  EmisorService{
 	
 	@Transactional
 	private void save(Cuenta cuenta, Emisor emisor) throws PersistenceException{
-		EmisorAssembler assembler = new EmisorAssembler(modelMapper);
-		List<ArchivoRepDTO> archs = assembler.emisorToListArchivoRepDTO(emisor);
+		List<ArchivoRepDTO> archs = this.emisorAssembler.emisorToListArchivoRepDTO(emisor);
 		
 		cuenta.upsert(emisor);
 		this.cuentaRepository.save(cuenta);
@@ -238,7 +244,7 @@ public class EmisorServiceImpl implements  EmisorService{
 		Cuenta cta;
 		Emisor e;
 		EmitirDTO ret;
-		EmisorAssembler emisorAssembler = new EmisorAssembler(catalogoService, modelMapper);
+		
 		
 		try{
 			cta = consultaCuenta(cuenta);
@@ -254,6 +260,31 @@ public class EmisorServiceImpl implements  EmisorService{
 			logger.debug("Emitir: {}", ret);
 		}catch(Exception exp){
 			logger.error("No se encuentra el certificado emisor: {}: ", e, exp);
+			throw exp;
+		}
+		
+		return ret;
+	}
+
+	@Override
+	public ImprimirDTO consultaDatosImprimir(String cuenta, String emisor) {
+		Cuenta cta;
+		Emisor e;
+		ImprimirDTO ret;
+		
+		try{
+			cta = consultaCuenta(cuenta);
+			logger.debug("Cuenta:" + cta.toString());
+		}catch(Exception exp){
+			logger.error("Cuenta: " + cuenta, exp);
+			throw exp;
+		}
+		e = cta.buscaEmisor(emisor);
+		try{
+			ret = emisorAssembler.emisorToImprimirDTO(e);
+			logger.debug("Emitir: {}", ret);
+		}catch(Exception exp){
+			logger.error("construccion de respuesta emisro: {} ", e, exp);
 			throw exp;
 		}
 		

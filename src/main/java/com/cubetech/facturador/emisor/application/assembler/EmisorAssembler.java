@@ -12,15 +12,15 @@ import javax.xml.bind.DatatypeConverter;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.cubetech.facturador.emisor.domain.catalogo.CodigoPostal;
 import com.cubetech.facturador.emisor.domain.catalogo.RegimenFiscal;
+import com.cubetech.facturador.emisor.domain.common.Direccion;
 import com.cubetech.facturador.emisor.domain.cuenta.Emisor;
 import com.cubetech.facturador.emisor.interfaces.facade.CatalogosService;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.EmisorDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.EmitirDTO;
+import com.cubetech.facturador.emisor.interfaces.facade.dto.ImprimirDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.RegistroEmisorDTO;
 import com.cubetech.facturador.emisor.interfaces.facade.dto.catalogos.CatalogoDTO;
 import com.cubetech.facturador.emisor.interfaces.rest.archivos.ArchivoRepDTO;
@@ -120,6 +120,21 @@ public class EmisorAssembler {
 		ret.setPass(e.getCertificado().getPassword());
 		ret.setPrivadoId(e.getCertificado().getPrivado().getCorrelacion());
 		ret.setEmitir(e.getCertificado().vigente());
+		
+		return ret;
+	}
+	public ImprimirDTO emisorToImprimirDTO(Emisor e) {
+		
+		ImprimirDTO ret = new ImprimirDTO();
+		Direccion dir = e.getDireccion();
+		ret.setCalle(dir.getCalle());
+		ret.setNumeroExterior(dir.getNumeroExterior());
+		ret.setNumeroInterior(dir.getNumeroInterior());
+		ret.setCodigoPostal(dir.getCodigoPostal());
+		ret.setColonia(dir.getColonia());
+		ret.setPais(dir.getPais());
+		ret.setEstado(dir.getEstado());
+		ret.setLogo(e.getLogo().getCorrelacion());
 		
 		return ret;
 	}

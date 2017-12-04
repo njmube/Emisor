@@ -16,33 +16,32 @@ spring:
   profiles: local
   datasource:
     url:  jdbc:mysql://localhost:3306/emisor
-    username: emisorOwne
+    username: emisorOwner
     password: PO6vvdj2SxTq7g5H
 app:
   catalogourl:  http://localhost:57777
   emisorurl:    http://localhost:57778
   archivourl:   http://localhost:57779
   timbreurl:    http://localhost:57781
- 
+
 ---
 spring:
   profiles: dev
   datasource:
     url:  jdbc:mysql://mysql:3306/emisor
-    username: emisorOwne
+    username: emisorOwner
     password: PO6vvdj2SxTq7g5H
 app:
   catalogourl:  http://catalogo:57777
   archivourl:   http://file:57779
-  
+
 ---
 spring:
   profiles: prd
   datasource:
     url:  jdbc:mysql://mysql:3306/emisor
-    username: emisorOwne
+    username: emisorOwner
     password: PO6vvdj2SxTq7g5H
 app:
   catalogourl:  http://catalogo:57777
   archivourl:   http://file:57779
-  
